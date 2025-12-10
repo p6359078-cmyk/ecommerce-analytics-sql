@@ -1,0 +1,71 @@
+CREATE DATABASE IF NOT EXISTS ecommerce;
+USE ecommerce;
+
+-- Customers
+CREATE TABLE customers (
+  customer_id INT PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100),
+  city VARCHAR(50),
+  created_at DATE
+);
+
+-- Categories
+CREATE TABLE categories (
+  category_id INT PRIMARY KEY,
+  name VARCHAR(50)
+);
+
+-- Products
+CREATE TABLE products (
+  product_id INT PRIMARY KEY,
+  name VARCHAR(100),
+  category_id INT,
+  price DECIMAL(10,2),
+  in_stock INT,
+  FOREIGN KEY (category_id) REFERENCES categories(category_id)
+);
+
+-- Orders
+CREATE TABLE orders (
+  order_id INT PRIMARY KEY,
+  customer_id INT,
+  order_date DATE,
+  status VARCHAR(30),
+  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+-- Order Items
+CREATE TABLE order_items (
+  item_id INT PRIMARY KEY,
+  order_id INT,
+  product_id INT,
+  quantity INT,
+  unit_price DECIMAL(10,2),
+  FOREIGN KEY (order_id) REFERENCES orders(order_id),
+  FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- Payments
+CREATE TABLE payments (
+  payment_id INT PRIMARY KEY,
+  order_id INT,
+  paid_amount DECIMAL(10,2),
+  method VARCHAR(30),
+  paid_on DATE,
+  FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
+
+-- Reviews
+CREATE TABLE reviews (
+  review_id INT PRIMARY KEY,
+  product_id INT,
+  customer_id INT,
+  rating INT,
+  review_text VARCHAR(255),
+  review_date DATE,
+  FOREIGN KEY (product_id) REFERENCES products(product_id),
+  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+“Added schema.sql”.
