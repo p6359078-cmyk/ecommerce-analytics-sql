@@ -1,0 +1,37 @@
+-- Category Revenue
+SELECT c.name AS category,
+       SUM(oi.quantity * oi.unit_price) AS revenue
+FROM order_items oi
+JOIN products p ON oi.product_id = p.product_id
+JOIN categories c ON p.category_id = c.category_id
+GROUP BY c.name
+ORDER BY revenue DESC;
+
+-- Monthly Revenue Trend
+SELECT DATE_FORMAT(o.order_date, '%Y-%m') AS month,
+       SUM(oi.quantity * oi.unit_price) AS revenue
+FROM orders o
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY DATE_FORMAT(o.order_date, '%Y-%m')
+ORDER BY month;
+
+-- Top Products by Revenue
+SELECT p.name AS product,
+       SUM(oi.quantity * oi.unit_price) AS revenue
+FROM order_items oi
+JOIN products p ON oi.product_id = p.product_id
+GROUP BY p.name
+ORDER BY revenue DESC
+LIMIT 10;
+
+-- Top 5 Customers
+SELECT c.name AS customer,
+       SUM(oi.quantity * oi.unit_price) AS revenue
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY c.name
+ORDER BY revenue DESC
+LIMIT 5;
+
+"added dashboard queries"
